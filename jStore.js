@@ -32,14 +32,14 @@
     else
       payload = content;
     return {
-   	  lastUpdate: new Date().getTime(),
-	  content: payload
+      lastUpdate: new Date().getTime(),
+      content: payload
     };
   };	
   
   isActiveStore = function(id){
-  	var storeObject = localStorage.getItem(id);
-  	return storeObject ? true : false; 
+    var storeObject = localStorage.getItem(id);
+    return storeObject ? true : false; 
   };
   	
   getStoreData = function(id){
@@ -64,7 +64,7 @@
   };
   
   deleteStoreData = function(id){
-  	localStorage.removeItem(id);
+     localStorage.removeItem(id);
   };
   
   clearStoreData = function(id){
