@@ -118,7 +118,7 @@
   * Clear user localstore.
   * 
   */
-  clearStoreData = function(id){
+  clearStoreData = function(){
     localStorage.clear();
   };
   
