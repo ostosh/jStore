@@ -10,6 +10,13 @@
     clearStoreData
   ;
   
+  /**
+  * Detects browser specific
+  * implementation of local store size
+  * limitation exception
+  *
+  * @param {exception} e The exception thrown
+  */
   isSizeLimitException = function(e){
     var quotaExceeded = false;
     if (e) {
@@ -22,7 +29,14 @@
     }
     return false;
   }
-  
+
+  /**
+  * Creates local store object
+  * for given content
+  *
+  * @param {} content The store object
+  * data to be stored
+  */
   createStoreObject = function(content){
     var payload;
     if(content instanceof Array)
@@ -37,16 +51,36 @@
     };
   };	
   
+  /**
+  * Tests if given id is currently
+  * stored
+  *
+  * @param {String} id Store object id
+  */
   isActiveStore = function(id){
     var storeObject = localStorage.getItem(id);
     return storeObject ? true : false; 
   };
-  	
+  
+    
+  /**
+  * Retrieve store object for given
+  * id. Return null if id not found.
+  *
+  * @param {String} id Store object id
+  */
   getStoreData = function(id){
     var storeObject = JSON.parse(localStorage.getItem(id));
     return storeObject['content'] ? storeObject['content'] : null;
   };
 
+  /**
+  * Create and store object for given
+  * id and data.
+  *
+  * @param {String} id Store object id
+  * @param {} data Store object data
+  */
   setStoreData = function(id, data){
     var storeObject = createStoreObject(data);
     try {
@@ -58,15 +92,32 @@
     } 
   };
   
+  /**
+  * Update store object for given
+  * id and data.
+  *
+  * @param {String} id Store object id
+  * @param {} data Store object data
+  */
   updateStoreData = function(id, data){
     deleteStoreData(id);
     setStoreData(id, data);
   };
   
+  /**
+  * Delete store object for given
+  * id.
+  *
+  * @param {String} id Store object id
+  */
   deleteStoreData = function(id){
      localStorage.removeItem(id);
   };
   
+  /**
+  * Clear user localstore.
+  * 
+  */
   clearStoreData = function(id){
     localStorage.clear();
   };
