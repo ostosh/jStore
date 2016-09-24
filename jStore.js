@@ -8,10 +8,11 @@
     setStoreData,
     updateStoreData,
     deleteStoreData,
-    clearStoreData
+    clearStoreData,
+    getAllStoreItems
   ;
   
-  /**
+ /**
   * Detects browser specific
   * implementation of local store size
   * limitation exception
@@ -31,7 +32,7 @@
     return false;
   }
   
-  /**
+ /**
   * Deep clone given object
   *
   * @param {Object} content The object
@@ -71,7 +72,7 @@
     }
   };
 
-  /**
+ /**
   * Creates local store object
   * for given content
   *
@@ -90,7 +91,7 @@
     };
   };	
   
-  /**
+ /**
   * Tests if given id is currently
   * stored
   *
@@ -100,9 +101,8 @@
     var storeObject = localStorage.getItem(id);
     return storeObject ? true : false; 
   };
-  
-    
-  /**
+
+ /**
   * Retrieve store object for given
   * id. Return null if id not found.
   *
@@ -113,7 +113,7 @@
     return storeObject['content'] ? storeObject['content'] : null;
   };
 
-  /**
+ /**
   * Create and store object for given
   * id and data.
   *
@@ -123,7 +123,7 @@
   setStoreData = function(id, data){
     var storeObject = createStoreObject(data);
     try {
-      localStorage.setItem(id, JSON.stringify(storeObject));
+      localStorage.setItem(id, JSON.stringify(clone(storeObject)));
     } catch(e) {
       if (isSizeLimitException(e)) {
         clearStoreData();
@@ -131,7 +131,7 @@
     } 
   };
   
-  /**
+ /**
   * Update store object for given
   * id and data.
   *
@@ -143,7 +143,7 @@
     setStoreData(id, data);
   };
   
-  /**
+ /**
   * Delete store object for given
   * id.
   *
@@ -153,7 +153,7 @@
      localStorage.removeItem(id);
   };
   
-  /**
+ /**
   * Clear user localstore.
   * 
   */
@@ -161,11 +161,27 @@
     localStorage.clear();
   };
   
+  /**
+   * Retrieve all local store
+   * items in id keyed map
+   * 
+   */
+  getAllStoreItems = function(){
+    var items = {};
+    var ids = Object.keys(localStorage),
+    i = keys.length;
+    for(var i = 0; i < keys.length; i++){
+      items[keys[i]] = localStorage.getItem(getStoreData(keys[i]));
+    }
+    return items;
+  };
+  
 window.jStore = {
     isActiveStore: isActiveStore,
     getStoreData: getStoreData,
     setStoreData: setStoreData, 
     updateStoreData: updateStoreData,
-    deleteStoreData: deleteStoreData
+    deleteStoreData: deleteStoreData,
+    getAllStoreItems: getAllStoreItems
   }
 }( window ));
