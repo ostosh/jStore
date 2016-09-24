@@ -212,7 +212,7 @@
   };
   
   
-window.jStore = {
+  window.jStore = {
     isActiveStore: isActiveStore,
     getStoreData: getStoreData,
     setStoreData: setStoreData, 
