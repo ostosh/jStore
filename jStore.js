@@ -4,12 +4,14 @@
     clone,
     createStoreObject,
     isActiveStore,
+    getStoreContent,
     getStoreData,
     setStoreData,
     updateStoreData,
     deleteStoreData,
     clearStoreData,
-    getAllStoreItems
+    getAllStoreItems,
+    evictLeastRecentlyUsed
   ;
   
  /**
@@ -87,7 +89,7 @@
       payload = content;
     return {
       lastUpdate: new Date().getTime(),
-      content: payload
+      data: payload
     };
   };	
   
@@ -101,16 +103,28 @@
     var storeObject = localStorage.getItem(id);
     return storeObject ? true : false; 
   };
-
- /**
+  
+  /**
   * Retrieve store object for given
   * id. Return null if id not found.
   *
   * @param {String} id Store object id
   */
-  getStoreData = function(id){
+  getStoreContent = function(id){
     var storeObject = JSON.parse(localStorage.getItem(id));
-    return storeObject['content'] ? storeObject['content'] : null;
+    return storeObject ? storeObject : null;
+  };
+
+
+ /**
+  * Retrieve store data for given
+  * id. Return null if id not found.
+  *
+  * @param {String} id Store object id
+  */
+  getStoreData = function(id){
+    var storeObject = getStoreContent(id);
+    return storeObject['data'] ? storeObject['data'] : null;
   };
 
  /**
@@ -126,7 +140,8 @@
       localStorage.setItem(id, JSON.stringify(clone(storeObject)));
     } catch(e) {
       if (isSizeLimitException(e)) {
-        clearStoreData();
+        evictLeastRecentlyUsed();
+        setStoreData(id, data);
       }
     } 
   };
@@ -168,13 +183,34 @@
    */
   getAllStoreItems = function(){
     var items = {};
-    var ids = Object.keys(localStorage),
-    i = keys.length;
+    var ids = Object.keys(localStorage);
     for(var i = 0; i < keys.length; i++){
       items[keys[i]] = localStorage.getItem(getStoreData(keys[i]));
     }
     return items;
   };
+  
+  /**
+   * Evict store item based on LRU
+   * policy
+   * 
+   */
+  evictLeastRecentlyUsed = function(){
+    var items = {};
+    var ids = Object.keys(localStorage);
+    var latestId = null;
+    var latestTime = Number.MAX_SAFE_INTEGER;
+    for(var i = 0; i < keys.length; i++){
+      var content = getStoreContent(keys[i]);
+      if(content['lastUpdate'] < latestTime){
+        latestTime = content['lastUpdate'];
+        latestID = keys[i];
+      }
+    }
+    if(latestID !== null)
+      deleteStoreData(latestID);
+  };
+  
   
 window.jStore = {
     isActiveStore: isActiveStore,
