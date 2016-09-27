@@ -12,17 +12,17 @@ Installation:
 
 Public API:
 
-[isActiveStoreData](jStore.js#L96)
+[isActiveStoreData](jStore.js#L136)
 
-[getStoreData](jStore.js#L119)
+[getStoreData](jStore.js#L147)
 
-[setStoreData](jStore.js#L130)
+[setStoreData](jStore.js#L158)
 
-[updateStoreData](jStore.js#L149)
+[updateStoreData](jStore.js#L177)
 
-[deleteStoreData](jStore.js#L161)
+[deleteStoreData](jStore.js#L189)
 
-[getAllStoreItems](jStore.js#L179)
+[getAllStoreItems](jStore.js#L199)
 
 
 
