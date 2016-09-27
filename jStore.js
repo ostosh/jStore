@@ -3,7 +3,7 @@
     isSizeLimitException,
     clone,
     createStoreObject,
-    isActiveStore,
+    isActiveStoreData,
     getStoreContent,
     getStoreData,
     setStoreData,
@@ -94,12 +94,41 @@
   };	
   
  /**
+  * Clear user localstore.
+  * 
+  */
+  clearStoreData = function(){
+    localStorage.clear();
+  };
+  
+  /**
+   * Evict store item based on LRU
+   * policy
+   * 
+   */
+  evictLeastRecentlyUsed = function(){
+    var items = {};
+    var ids = Object.keys(localStorage);
+    var latestId = null;
+    var latestTime = Number.MAX_SAFE_INTEGER;
+    for(var i = 0; i < keys.length; i++){
+      var content = getStoreContent(keys[i]);
+      if(content['lastUpdate'] < latestTime){
+        latestTime = content['lastUpdate'];
+        latestID = keys[i];
+      }
+    }
+    if(latestID !== null)
+      deleteStoreData(latestID);
+  };
+  
+ /**
   * Tests if given id is currently
   * stored
   *
   * @param {String} id Store object id
   */
-  isActiveStore = function(id){
+  isActiveStoreData = function(id){
     var storeObject = localStorage.getItem(id);
     return storeObject ? true : false; 
   };
@@ -114,7 +143,6 @@
     var storeObject = JSON.parse(localStorage.getItem(id));
     return storeObject ? storeObject : null;
   };
-
 
  /**
   * Retrieve store data for given
@@ -168,14 +196,6 @@
      localStorage.removeItem(id);
   };
   
- /**
-  * Clear user localstore.
-  * 
-  */
-  clearStoreData = function(){
-    localStorage.clear();
-  };
-  
   /**
    * Retrieve all local store
    * items in id keyed map
@@ -190,30 +210,8 @@
     return items;
   };
   
-  /**
-   * Evict store item based on LRU
-   * policy
-   * 
-   */
-  evictLeastRecentlyUsed = function(){
-    var items = {};
-    var ids = Object.keys(localStorage);
-    var latestId = null;
-    var latestTime = Number.MAX_SAFE_INTEGER;
-    for(var i = 0; i < keys.length; i++){
-      var content = getStoreContent(keys[i]);
-      if(content['lastUpdate'] < latestTime){
-        latestTime = content['lastUpdate'];
-        latestID = keys[i];
-      }
-    }
-    if(latestID !== null)
-      deleteStoreData(latestID);
-  };
-  
-  
   window.jStore = {
-    isActiveStore: isActiveStore,
+    isActiveStoreData: isActiveStoreData,
     getStoreData: getStoreData,
     setStoreData: setStoreData, 
     updateStoreData: updateStoreData,
