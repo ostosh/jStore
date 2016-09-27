@@ -123,17 +123,6 @@
   };
   
  /**
-  * Tests if given id is currently
-  * stored
-  *
-  * @param {String} id Store object id
-  */
-  isActiveStoreData = function(id){
-    var storeObject = localStorage.getItem(id);
-    return storeObject ? true : false; 
-  };
-  
-  /**
   * Retrieve store object for given
   * id. Return null if id not found.
   *
@@ -143,7 +132,18 @@
     var storeObject = JSON.parse(localStorage.getItem(id));
     return storeObject ? storeObject : null;
   };
-
+  
+ /**
+  * Tests if given id is currently
+  * stored
+  *
+  * @param {String} id Store object id
+  */
+  isActiveStoreData = function(id){
+    var storeObject = localStorage.getItem(id);
+    return storeObject ? true : false; 
+  };
+ 
  /**
   * Retrieve store data for given
   * id. Return null if id not found.
